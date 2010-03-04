@@ -189,6 +189,10 @@ class CommentsViewlet(ViewletBase, layout.FormWrapper):
         self.portal_discussion = getToolByName(self.context, 'portal_discussion', None)
         self.portal_membership = getToolByName(self.context, 'portal_membership', None)
 
+    def update(self):
+        ViewletBase.update(self)
+        layout.FormWrapper.update(self)
+
     def render_form(self):
         z2.switch_on(self, request_layer=self.request_layer)
         self.form.update(self.form_instance)
