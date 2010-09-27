@@ -8,6 +8,8 @@ from zope.component import createObject
 
 from zope.component import getMultiAdapter
 
+from Products.CMFCore.utils import getToolByName
+
 from Products.PloneTestCase.ptc import PloneTestCase
 
 from plone.app.discussion.tests.layer import DiscussionLayer
@@ -29,7 +31,8 @@ class CommentTest(PloneTestCase):
         self.loginAsPortalOwner()
         typetool = self.portal.portal_types
         typetool.constructContent('Document', self.portal, 'doc1')
-
+        self.catalog = getToolByName(self.portal, 'portal_catalog')
+        
     def test_factory(self):
         comment1 = createObject('plone.Comment')
         self.assert_(IComment.providedBy(comment1))
@@ -57,6 +60,35 @@ class CommentTest(PloneTestCase):
         self.assertEquals('123', comment1.getId())
         self.assertEquals(u'123', comment1.__name__)
 
+    def test_uid(self):
+        conversation = IConversation(self.portal.doc1)
+        comment1 = createObject('plone.Comment')
+        conversation.addComment(comment1)
+        comment_brain = self.catalog.searchResults(
+                            portal_type = 'Discussion Item')[0]
+        self.failUnless(comment_brain.UID)
+        
+    def test_uid_is_unique(self):
+        conversation = IConversation(self.portal.doc1)        
+        comment1 = createObject('plone.Comment')
+        conversation.addComment(comment1)
+        comment2 = createObject('plone.Comment')
+        conversation.addComment(comment2)
+        brains = self.catalog.searchResults(
+                     portal_type = 'Discussion Item')
+        self.assertNotEquals(brains[0].UID, None)
+        self.assertNotEquals(brains[1].UID, None)
+        self.assertNotEquals(brains[0].UID, brains[1].UID)
+    
+    def test_comment_uid_differs_from_content_uid(self):
+        conversation = IConversation(self.portal.doc1)        
+        comment1 = createObject('plone.Comment')
+        conversation.addComment(comment1)
+        comment_brain = self.catalog.searchResults(
+                            portal_type = 'Discussion Item')[0]
+        self.assertNotEquals(comment_brain.UID, None)
+        self.assertNotEquals(self.portal.doc1.UID, comment_brain.UID)
+                
     def test_title(self):
         comment1 = createObject('plone.Comment')
         comment1.title = "New title"

@@ -40,6 +40,7 @@ from zope.container.contained import ContainerModifiedEvent
 
 try:
     # Plone 4
+    from zope.lifecycleevent import ObjectCreatedEvent
     from zope.lifecycleevent import ObjectAddedEvent
     from zope.lifecycleevent import ObjectRemovedEvent
 except ImportError: # pragma: no cover
@@ -254,6 +255,7 @@ class Conversation(Traversable, Persistent, Explicit):
         # acquisition wrapped or the indexing will fail.
         notify(ObjectAddedEvent(comment.__of__(self), self, id))
         notify(ContainerModifiedEvent(self))
+        notify(ObjectCreatedEvent(comment))
 
         return id
 
