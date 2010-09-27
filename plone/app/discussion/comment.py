@@ -27,10 +27,15 @@ from OFS.Traversable import Traversable
 
 from plone.registry.interfaces import IRegistry
 
+from plone.uuid.interfaces import IUUID
+
 from plone.app.discussion import PloneAppDiscussionMessageFactory as _
 from plone.app.discussion.interfaces import IComment
 from plone.app.discussion.interfaces import IConversation
 from plone.app.discussion.interfaces import IDiscussionSettings
+
+from zope.event import notify
+from zope.lifecycleevent import ObjectCreatedEvent
 
 try:
     # Plone 4:
@@ -93,6 +98,7 @@ class Comment(CatalogAware, WorkflowAware, DynamicType, Traversable,
 
     def __init__(self):
         self.creation_date = self.modification_date = datetime.utcnow()
+        notify(ObjectCreatedEvent(self))
 
     @property
     def __name__(self):
@@ -106,6 +112,9 @@ class Comment(CatalogAware, WorkflowAware, DynamicType, Traversable,
         """The id of the comment, as a string
         """
         return self.id
+
+#    def UID(self):
+#        IUUID(self, None)
 
     def getText(self):
         '''the text'''
