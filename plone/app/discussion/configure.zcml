@@ -11,6 +11,7 @@
 
     <include package="plone.indexer" />
     <include package="plone.uuid" />
+	<include package="plone.app.uuid" />
 	
     <include file="permissions.zcml" />
     <include file="notifications.zcml" />
