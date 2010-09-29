@@ -98,7 +98,6 @@ class Comment(CatalogAware, WorkflowAware, DynamicType, Traversable,
 
     def __init__(self):
         self.creation_date = self.modification_date = datetime.utcnow()
-        notify(ObjectCreatedEvent(self))
 
     @property
     def __name__(self):
