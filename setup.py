@@ -43,6 +43,7 @@ setup(name='plone.app.discussion',
           'test': [
               'plone.app.testing',
               'interlude',
+              'plone.mocktestcase',
           ]
       },      
       entry_points="""
