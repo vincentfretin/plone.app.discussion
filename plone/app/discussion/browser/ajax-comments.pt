@@ -140,20 +140,6 @@
         </form>
     </div>
 
-    <div id="commenting" class="reply" tal:condition="python:isDiscussionAllowed and (isAnon and isAnonymousDiscussionAllowed or userHasReplyPermission)">
-
-        <fieldset>
-
-            <legend i18n:translate="label_add_comment">Add comment</legend>
-            <p i18n:translate="description_add_comment">
-                You can add a comment by filling out the form below. Plain text
-                formatting.
-            </p>
-
-            <div tal:replace="structure view/form/render" />
-
-        </fieldset>
-    </div>
 
 </tal:block>
 </tal:block>

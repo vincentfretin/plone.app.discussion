@@ -40,8 +40,9 @@ class AjaxLoadTest(PloneTestCase):
 
     def test_ajax_load_view(self):
         view = AjaxCommentLoad(self.portal.doc1, self.app.REQUEST)
+        view.__of__(self.portal.doc1)
+        result = view()
 
-        #result = view()
     def xtest_ajax_load(self):
         '''
         This is not a "real" test method.

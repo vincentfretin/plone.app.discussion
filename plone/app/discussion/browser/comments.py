@@ -373,4 +373,8 @@ class CommentsViewlet(CommentsBase, ViewletBase):
 
 class AjaxCommentLoad(CommentsBase, BrowserView):
     "View for ajax-loaded comments"
+    template = ViewPageTemplateFile('ajax-comments.pt')
+    def render(self):
+        return self.template()
+    __call__ = render
 

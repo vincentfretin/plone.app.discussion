@@ -79,7 +79,6 @@
         layer="..interfaces.IDiscussionLayer"
         class=".comments.AjaxCommentLoad"
         permission="zope2.View"
-        template="ajax-comments.pt"
         />
 
     <!-- Comments viewlet -->
