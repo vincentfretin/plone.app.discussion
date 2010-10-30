@@ -283,7 +283,7 @@ class CommentsBase(object):
 
         def replies_with_workflow_actions():
             # Generator that returns replies dict with workflow actions
-            for r in conversation.getThreads(start=0, size=None):
+            for r in conversation.getThreads(start=start, size=size):
                 comment_obj = r['comment']
                 # list all possible workflow actions
                 actions = [a for a in wf.listActionInfos(object=comment_obj)
@@ -294,7 +294,7 @@ class CommentsBase(object):
 
         def published_replies():
             # Generator that returns replies dict with workflow status.
-            for r in conversation.getThreads(start=0, size=None):
+            for r in conversation.getThreads(start=start, size=size):
                 comment_obj = r['comment']
                 workflow_status = wf.getInfoFor(comment_obj, 'review_state')
                 if workflow_status == 'published':

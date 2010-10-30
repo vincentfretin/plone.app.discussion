@@ -10,6 +10,7 @@ from plone.app.discussion.browser.comments import AjaxCommentLoad
 from zope.component import createObject
 import unittest
 
+COMMENT_COUNT = 100
 
 class AjaxLoadTest(PloneTestCase):
 
@@ -32,16 +33,23 @@ class AjaxLoadTest(PloneTestCase):
         # Create a very long conversation with hundreds of comments
         # so that we can start a ZServer and fiddle with firebug
         conversation = IConversation(self.portal.doc1)
-        for i in range(100):
+        for i in range(COMMENT_COUNT):
             comment = createObject('plone.Comment')
             comment.title = 'Comment %i' % i
             comment.text = 'Comment %i text' % i
             conversation.addComment(comment)
 
-    def test_ajax_load_view(self):
-        view = AjaxCommentLoad(self.portal.doc1, self.app.REQUEST)
-        view.__of__(self.portal.doc1)
-        result = view()
+    def test_ajax_load_full_view(self):
+        full_view = AjaxCommentLoad(self.portal.doc1, self.app.REQUEST)
+        full_view.__of__(self.portal.doc1)
+        replies = full_view.get_replies()
+        self.assertEqual(len(tuple(replies)), COMMENT_COUNT)
+
+    def test_ajax_load_batch_view(self):
+        batch_view = AjaxCommentLoad(self.portal.doc1, self.app.REQUEST)
+        batch_view.__of__(self.portal.doc1)
+        replies = batch_view.get_replies(start=0, size=10)
+        self.assertEqual(len(tuple(replies)), 10)
 
     def xtest_ajax_load(self):
         '''
