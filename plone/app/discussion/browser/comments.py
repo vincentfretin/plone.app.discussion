@@ -17,6 +17,7 @@ from z3c.form import form, field, button, interfaces
 from z3c.form.interfaces import IFormLayer
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
 
@@ -220,18 +221,7 @@ class CommentForm(extensible.ExtensibleForm, form.Form):
         pass # pragma: no cover
 
 
-class CommentsViewlet(ViewletBase):
-
-    form = CommentForm
-    index = ViewPageTemplateFile('comments.pt')
-
-    def update(self):
-        super(CommentsViewlet, self).update()
-        z2.switch_on(self, request_layer=IFormLayer)
-        self.form = self.form(aq_inner(self.context), self.request)
-        if HAS_WRAPPED_FORM: 
-            alsoProvides(self.form, IWrappedForm) 
-        self.form.update()
+class CommentsBase(object):
 
     # view methods
 
@@ -274,7 +264,7 @@ class CommentsViewlet(ViewletBase):
                 pass
         return False
 
-    def get_replies(self, workflow_actions=False):
+    def get_replies(self, workflow_actions=False, start=0, size=None):
         """Returns all replies to a content object.
 
         If workflow_actions is false, only published
@@ -293,7 +283,7 @@ class CommentsViewlet(ViewletBase):
 
         def replies_with_workflow_actions():
             # Generator that returns replies dict with workflow actions
-            for r in conversation.getThreads():
+            for r in conversation.getThreads(start=0, size=None):
                 comment_obj = r['comment']
                 # list all possible workflow actions
                 actions = [a for a in wf.listActionInfos(object=comment_obj)
@@ -304,7 +294,7 @@ class CommentsViewlet(ViewletBase):
 
         def published_replies():
             # Generator that returns replies dict with workflow status.
-            for r in conversation.getThreads():
+            for r in conversation.getThreads(start=0, size=None):
                 comment_obj = r['comment']
                 workflow_status = wf.getInfoFor(comment_obj, 'review_state')
                 if workflow_status == 'published':
@@ -366,3 +356,21 @@ class CommentsViewlet(ViewletBase):
         util = getToolByName(self.context, 'translation_service')
         zope_time = DateTime(time.isoformat())
         return util.toLocalizedTime(zope_time, long_format=True)
+
+class CommentsViewlet(CommentsBase, ViewletBase):
+    "Viewlet for comments shown in page"
+    form = CommentForm
+    index = ViewPageTemplateFile('comments.pt')
+
+    def update(self):
+        super(CommentsViewlet, self).update()
+        z2.switch_on(self, request_layer=IFormLayer)
+        self.form = self.form(aq_inner(self.context), self.request)
+        if HAS_WRAPPED_FORM: 
+            alsoProvides(self.form, IWrappedForm) 
+        self.form.update()
+
+
+class AjaxCommentLoad(CommentsBase, BrowserView):
+    "View for ajax-loaded comments"
+

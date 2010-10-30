@@ -72,6 +72,16 @@
         permission="plone.app.discussion.ReviewComments"
         />
 
+    <!-- Ajax comment load view -->
+    <browser:page
+        for="Products.CMFCore.interfaces.IContentish"
+        name="ajax-load-comments"
+        layer="..interfaces.IDiscussionLayer"
+        class=".comments.AjaxCommentLoad"
+        permission="zope2.View"
+        template="ajax-comments.pt"
+        />
+
     <!-- Comments viewlet -->
     <browser:viewlet
         name="plone.comments"
