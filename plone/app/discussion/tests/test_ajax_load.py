@@ -1,80 +1,56 @@
+# -*- coding: utf-8 -*-
+
+import unittest
+
+from plone.mocktestcase import MockTestCase
+
+from zope.component import createObject
+
 from Products.PloneTestCase.ptc import PloneTestCase
 from plone.app.discussion.tests.layer import DiscussionLayer
 from Products.CMFCore.utils import getToolByName
 
-
 from plone.app.discussion.interfaces import IConversation
+from plone.app.discussion.conversation import Conversation
+from plone.app.discussion.comment import Comment
 
 from plone.app.discussion.browser.comments import AjaxCommentLoad
 
-from zope.component import createObject
-import unittest
+try:
+    # These exist in new versions, but not in the one that comes with Zope 2.10.
+    from BTrees.LOBTree import LOBTree
+except ImportError: # pragma: no cover
+    from BTrees.OOBTree import OOBTree as LOBTree # pragma: no cover
 
-COMMENT_COUNT = 100
+COMMENT_COUNT = 50
 
-class AjaxLoadTest(PloneTestCase):
 
-    layer = DiscussionLayer
+class AjaxLoadTest(MockTestCase):
 
-    def afterSetUp(self):
-        # First we need to create some content.
-        self.loginAsPortalOwner()
-        typetool = self.portal.portal_types
-        typetool.constructContent('Document', self.portal, 'doc1')
-        self.typetool = typetool
-        self.portal_discussion = getToolByName(self.portal, 
-                                               'portal_discussion', 
-                                               None)
-        # we publish it
-        wft = getToolByName(self.portal, 'portal_workflow')
-        wft.doActionFor(self.portal.doc1, 'publish')
-        # and enable discussion on it
-        self.portal_discussion.overrideDiscussionFor(self.portal.doc1, True)
-        # Create a very long conversation with hundreds of comments
-        # so that we can start a ZServer and fiddle with firebug
-        conversation = IConversation(self.portal.doc1)
+    def setUp(self):
+        context_mock = self.mocker.mock()
+        request_mock = self.mocker.mock()
+        conversation = Conversation()
+        conversation._children = LOBTree()
         for i in range(COMMENT_COUNT):
-            comment = createObject('plone.Comment')
-            comment.title = 'Comment %i' % i
+            comment = Comment()
+            #comment = self.mocker.mock('plone.Comment')
+            #comment.in_reply_to = 0
             comment.text = 'Comment %i text' % i
             conversation.addComment(comment)
-
-    def test_ajax_load_full_view(self):
-        full_view = AjaxCommentLoad(self.portal.doc1, self.app.REQUEST)
-        full_view.__of__(self.portal.doc1)
+        self.context_mock = context_mock
+        self.request_mock = request_mock
+        self.replay()
+        
+    def test_ajax_full_view(self):
+        full_view = AjaxCommentLoad(self.context_mock, self.request_mock)
         replies = full_view.get_replies()
         self.assertEqual(len(tuple(replies)), COMMENT_COUNT)
 
     def test_ajax_load_batch_view(self):
-        batch_view = AjaxCommentLoad(self.portal.doc1, self.app.REQUEST)
-        batch_view.__of__(self.portal.doc1)
+        batch_view = AjaxCommentLoad(self.context_mock, self.request_mock)
         replies = batch_view.get_replies(start=0, size=10)
         self.assertEqual(len(tuple(replies)), 10)
 
-    def xtest_ajax_load(self):
-        '''
-        This is not a "real" test method.
-        I'm using it to develop ajax loading of comments.
-        I'll converti it to a Selenium test soon.
-        This should be a starting point: https://weblion.psu.edu/svn/weblion/weblion/assessmentmanagement.core/trunk/assessmentmanagement/core/selenium/testSelenium.py
-
-        This too: http://pastebin.com/Dnx4WSMk
-        '''
-        import Testing
-        host, port = Testing.ZopeTestCase.utils.startZServer()
-        obj_path = self.portal.doc1.virtual_url_path()
-        url = "http://%s:%i/%s" % (host, port, obj_path)
-        print
-        print url
-        import transaction
-        # The next line should NOT be committed uncommented
-        #transaction.commit() # I know I shouldn't do this, but this way it works
-
-        # Fire your favourite debugger (pdb obviously),
-        # open Firebug. and start coding!
-        # XXX this should become a real test
-        
-
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)
-
