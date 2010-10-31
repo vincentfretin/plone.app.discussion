@@ -378,3 +378,13 @@ class AjaxCommentLoad(CommentsBase, BrowserView):
         return self.template()
     __call__ = render
 
+    def get_replies(self, workflow_actions=False, start=0, size=None):
+        # Values in the request override the ones provided to this method
+        # XXX is this a good idea?
+        start = int(self.request.form.get('start', start))
+        size = self.request.form.get('size', size)
+        if size is not None:
+            size = int(size)
+        return super(AjaxCommentLoad, self).get_replies(
+            workflow_actions=False, start=start, size=size)
+
