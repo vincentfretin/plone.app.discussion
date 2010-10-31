@@ -2,18 +2,20 @@
 
 import unittest
 
-from plone.mocktestcase import MockTestCase
+from OFS.SimpleItem import SimpleItem
 
 from zope.component import createObject
-
-from Products.PloneTestCase.ptc import PloneTestCase
-from plone.app.discussion.tests.layer import DiscussionLayer
-from Products.CMFCore.utils import getToolByName
+from zope.interface import implements
+from zope.component import provideAdapter
+from zope.annotation.interfaces import IAnnotatable, IAnnotations
+from zope.annotation.interfaces import IAttributeAnnotatable
+from zope.annotation.attribute import AttributeAnnotations
+from zope.publisher.browser import TestRequest
 
 from plone.app.discussion.interfaces import IConversation
-from plone.app.discussion.conversation import Conversation
+from plone.app.discussion.conversation import Conversation, ANNOTATION_KEY
+from plone.app.discussion.conversation import conversationAdapterFactory
 from plone.app.discussion.comment import Comment
-
 from plone.app.discussion.browser.comments import AjaxCommentLoad
 
 try:
@@ -24,33 +26,46 @@ except ImportError: # pragma: no cover
 
 COMMENT_COUNT = 50
 
+class WorkflowMock(object):
+    def getInfoFor(self, obj, info):
+        return 'published'
 
-class AjaxLoadTest(MockTestCase):
+class ContextMock(SimpleItem):
+    implements(IAttributeAnnotatable, IAnnotatable)
+    portal_workflow = WorkflowMock()
+
+
+class AjaxLoadTest(unittest.TestCase):
 
     def setUp(self):
-        context_mock = self.mocker.mock()
-        request_mock = self.mocker.mock()
+        context_mock = ContextMock()
+        request_mock = TestRequest()
         conversation = Conversation()
         conversation._children = LOBTree()
+        provideAdapter(AttributeAnnotations)
+        provideAdapter(conversationAdapterFactory)
+        IAnnotations(context_mock)[ANNOTATION_KEY] = conversation
         for i in range(COMMENT_COUNT):
             comment = Comment()
-            #comment = self.mocker.mock('plone.Comment')
-            #comment.in_reply_to = 0
             comment.text = 'Comment %i text' % i
             conversation.addComment(comment)
         self.context_mock = context_mock
         self.request_mock = request_mock
-        self.replay()
-        
+
     def test_ajax_full_view(self):
-        full_view = AjaxCommentLoad(self.context_mock, self.request_mock)
-        replies = full_view.get_replies()
+        view = AjaxCommentLoad(self.context_mock, self.request_mock)
+        replies = view.get_replies()
         self.assertEqual(len(tuple(replies)), COMMENT_COUNT)
 
     def test_ajax_load_batch_view(self):
-        batch_view = AjaxCommentLoad(self.context_mock, self.request_mock)
-        replies = batch_view.get_replies(start=0, size=10)
-        self.assertEqual(len(tuple(replies)), 10)
+        view = AjaxCommentLoad(self.context_mock, self.request_mock)
+        replies = tuple(view.get_replies(start=0, size=10))
+        self.assertEqual(len(replies), 10)
+        # Check that those are really the first 10 comments
+        for i in range(10):
+            text = replies[i]['comment'].text
+            it_should_be = "Comment %i text" % i
+            self.assertEqual(text, it_should_be)
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)
