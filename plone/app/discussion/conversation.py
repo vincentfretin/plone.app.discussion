@@ -106,26 +106,18 @@ class Conversation(Traversable, Persistent, Explicit):
         if not settings.globally_enabled:
             return False
 
-        parent = aq_inner(self.__parent__)
-
-        # Always return False if object is a folder
-        if (IFolderish.providedBy(parent) and
-            not INonStructuralFolder.providedBy(parent)):
-            return False
+        obj = aq_parent(aq_inner(self))
 
         def traverse_parents(obj):
             # Run through the aq_chain of obj and check if discussion is
             # enabled in a parent folder.
             for obj in self.aq_chain:
                 if not IPloneSiteRoot.providedBy(obj):
-                    if (IFolderish.providedBy(obj) and
-                        not INonStructuralFolder.providedBy(obj)):
+                    if (IFolderish.providedBy(obj)):
                         flag = getattr(obj, 'allow_discussion', None)
                         if flag is not None:
                             return flag
             return None
-
-        obj = aq_parent(self)
 
         # If discussion is disabled for the object, bail out
         obj_flag = getattr(aq_base(obj), 'allow_discussion', None)

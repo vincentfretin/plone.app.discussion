@@ -4,6 +4,10 @@ Changelog
 1.0RC1 (unreleased)
 -------------------
 
+- Allow discussion for foldersih structural items.
+  This fixes http://dev.plone.org/plone/ticket/11245.
+  [dukebody]
+
 - Decode the title of the content safely.
   This fixes http://dev.plone.org/plone/ticket/11292
   [dukebody]
