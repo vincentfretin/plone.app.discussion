@@ -4,6 +4,10 @@ Changelog
 1.0RC1 (unreleased)
 -------------------
 
+- Decode the title of the content safely.
+  This fixes http://dev.plone.org/plone/ticket/11292
+  [dukebody]
+
 - Spanish translation updated.
   [dukebody]
 

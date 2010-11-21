@@ -32,6 +32,7 @@ from OFS.Traversable import Traversable
 from plone.registry.interfaces import IRegistry
 
 from plone.app.discussion import PloneAppDiscussionMessageFactory as _
+from plone.app.discussion.utils import safe_decode
 from plone.app.discussion.interfaces import IComment
 from plone.app.discussion.interfaces import IConversation
 from plone.app.discussion.interfaces import IDiscussionSettings
@@ -137,7 +138,7 @@ class Comment(CatalogAware, WorkflowAware, DynamicType, Traversable,
         title = translate(
             Message(COMMENT_TITLE,
                     mapping={'creator': creator,
-                             'content': content.Title().decode("utf-8")}))
+                             'content': safe_decode(content.Title())}))
         return title
     
     def Creator(self):
