@@ -8,8 +8,9 @@ Changelog
   This fixes http://dev.plone.org/plone/ticket/11245.
   [dukebody]
 
-- Decode the title of the content safely.
-  This fixes http://dev.plone.org/plone/ticket/11292
+- Use safe_unicode to decode the title of the content. encode("utf-8") caused
+  Dexterity based content types to raise a unicode decode error. This fixes
+  http://dev.plone.org/plone/ticket/11292
   [dukebody]
 
 - Spanish translation updated.
