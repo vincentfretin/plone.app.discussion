@@ -4,6 +4,10 @@ Changelog
 1.0RC1 (unreleased)
 -------------------
 
+- Provide a filter_callback option to the migration view, so that a custom
+  policy for which comments get migrated can be implemented.
+  [davisagli]
+
 - Make sure plone.app.registry's ZCML is loaded, so that its import step will run
   when plone.app.discussion is installed.
   [davisagli]
