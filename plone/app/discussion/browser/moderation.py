@@ -57,9 +57,6 @@ class View(BrowserView):
                                 sort_order='reverse')
         return self.template()
 
-    def cook(self, text):
-        return text
-
     def moderation_enabled(self):
         """Returns true if a 'review workflow' is enabled on 'Discussion Item'
            content type. A 'review workflow' is characterized by implementing
