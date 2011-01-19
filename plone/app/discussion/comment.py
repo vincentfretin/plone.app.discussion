@@ -131,8 +131,11 @@ class Comment(CatalogAware, WorkflowAware, DynamicType, Traversable,
             registry = queryUtility(IRegistry)
             settings = registry.forInterface(IDiscussionSettings, check=False)
             sourceMimetype = settings.text_transform
+        text = self.text
+        if isinstance(text, unicode):
+            text = text.encode('utf8')
         return transforms.convertTo(targetMimetype,
-                                    self.text,
+                                    text,
                                     context=self,
                                     mimetype=sourceMimetype).getData()
 
