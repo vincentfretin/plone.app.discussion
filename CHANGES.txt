@@ -4,6 +4,10 @@ Changelog
 1.0RC1 (unreleased)
 -------------------
 
+- When returning a comment's title, give preference to its title attribute
+  if set.
+  [davisagli]
+
 - Make sure that comment text is transformed to plain text when indexing.
   [davisagli]
 
