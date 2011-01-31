@@ -4,6 +4,10 @@ Changelog
 1.0RC1 (unreleased)
 -------------------
 
+- Handle timezones correctly while converting dates during the migration of
+  legacy comments.
+  [davisagli]
+
 - When returning a comment's title, give preference to its title attribute
   if set.
   [davisagli]
