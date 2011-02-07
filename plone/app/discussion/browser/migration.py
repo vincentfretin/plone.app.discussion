@@ -15,7 +15,7 @@ from plone.app.discussion.comment import CommentFactory
 from plone.app.discussion.interfaces import IConversation, IReplies, IComment
 
 
-def DT2dt(self, DT):
+def DT2dt(DT):
     """Convert a Zope DateTime (with timezone) into a Python datetime (GMT)."""
     DT = DT.toZone('GMT')
     return datetime(DT.year(), DT.month(), DT.day(), DT.hour(), DT.minute(), DT.second())
