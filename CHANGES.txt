@@ -4,6 +4,10 @@ Changelog
 1.0RC1 (unreleased)
 -------------------
 
+- Fix issue where GMT datetimes were converted into local timezone DateTimes
+  during indexing.
+  [davisagli]
+
 - Make discussion.css cacheable when registering it.
   [davisagli]
 
