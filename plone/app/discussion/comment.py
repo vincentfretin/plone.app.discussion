@@ -20,7 +20,6 @@ from zope.interface import implements
 from Acquisition import aq_parent, aq_base, Implicit
 
 from AccessControl.Role import RoleManager
-from OFS.owner import Owned
 
 from persistent import Persistent
 
@@ -34,12 +33,18 @@ from OFS.Traversable import Traversable
 from plone.registry.interfaces import IRegistry
 
 from plone.app.discussion import PloneAppDiscussionMessageFactory as _
+from plone.app.discussion.compatibility import PLONE_41
 from plone.app.discussion.interfaces import IComment
 from plone.app.discussion.interfaces import IConversation
 from plone.app.discussion.interfaces import IDiscussionSettings
 
 from Products.CMFCore.CMFCatalogAware import CatalogAware
 from Products.CMFCore.CMFCatalogAware import WorkflowAware
+
+if PLONE_41:
+    from OFS.owner import Owned
+else:
+    from AccessControl.Owned import Owned
 
 
 COMMENT_TITLE = _(u"comment_title",
