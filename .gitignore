@@ -18,3 +18,4 @@
 /.pydevproject
 /src/*
 *.mo
+/docs/source/_themes/plone
