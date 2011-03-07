@@ -73,6 +73,7 @@ class ConversationCatalogTest(PloneTestCase):
         self.doc1_brain = brains[0]
         self.comment1 = comment1
         self.new_comment1_id = new_comment1_id
+        conversation.total_comments
 
     def test_total_comments(self):
         self.failUnless(self.doc1_brain.has_key('total_comments'))
