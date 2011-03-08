@@ -161,6 +161,8 @@ class CommentReviewWorkflowTest(PloneTestCase):
         # Allow discussion and
         self.loginAsPortalOwner()
 
+        self.catalog = self.portal.portal_catalog
+
         # Allow discussion on the Document content type
         self.portal.portal_types['Document'].allow_discussion = True
         # Set workflow for Discussion item to review workflow
@@ -220,10 +222,12 @@ class CommentReviewWorkflowTest(PloneTestCase):
         self.assertEquals('pending',
                           self.portal.portal_workflow.getInfoFor(
                               self.comment, 'review_state'))
+        self.assertEquals(len(self.catalog({'total_comments':1})), 0)
         view = self.comment.restrictedTraverse('@@moderate-publish-comment')
         view()
         self.assertEquals('published', self.portal.portal_workflow.\
                           getInfoFor(self.comment, 'review_state'))
+        self.assertEquals(len(self.catalog({'total_comments':1})), 1)
 
     def test_publish_as_anonymous(self):
         self.logout()
