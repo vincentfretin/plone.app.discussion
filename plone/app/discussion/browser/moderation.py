@@ -154,12 +154,14 @@ class PublishComment(BrowserView):
     def __call__(self):
 
         comment = aq_inner(self.context)
+        commented_content = aq_parent(aq_parent(comment))
         workflow_action = self.request.form['workflow_action']
         portal_workflow = getToolByName(comment, 'portal_workflow')
         portal_workflow.doActionFor(comment, workflow_action)
 
         catalog = getToolByName(comment, 'portal_catalog')
         catalog.reindexObject(comment)
+        catalog.reindexObject(commented_content)
 
         IStatusMessage(self.context.REQUEST).addStatusMessage(
             _("Comment approved."),
