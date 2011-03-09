@@ -12,6 +12,7 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
  <permission>Reply to item</permission>
+ <permission>Public comment</permission>
 
  <state state_id="pending" title="Pending" i18n:attributes="title">
   <exit-transition transition_id="publish"/>
@@ -35,6 +36,8 @@
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
+  <permission-map name="Public comment" acquired="False">
+  </permission-map>
  </state>
 
  <state state_id="published" title="Published" i18n:attributes="title">
@@ -51,6 +54,9 @@
    <permission-role>Anonymous</permission-role>
   </permission-map>
   <permission-map name="Reply to item" acquired="True">
+  </permission-map>
+  <permission-map name="Public comment" acquired="False">
+    <permission-role>Anonymous</permission-role>
   </permission-map>
  </state>
 
@@ -112,7 +118,7 @@
   <default>
    <expression>state_change/getHistory</expression>
   </default>
-  <guard>
+cv  <guard>
    <guard-permission>Request review</guard-permission>
    <guard-permission>Review portal content</guard-permission>
   </guard>

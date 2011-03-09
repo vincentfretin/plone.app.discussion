@@ -13,6 +13,7 @@
  <permission>List folder contents</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
+ <permission>Public comment</permission>
 
  <state state_id="published" title="Published" i18n:attributes="title">
   <description i18n:translate="">
@@ -39,6 +40,9 @@
    <permission-role>Editor</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>Anonymous</permission-role>
+  </permission-map>
+  <permission-map name="Public comment" acquired="False">
    <permission-role>Anonymous</permission-role>
   </permission-map>
  </state>

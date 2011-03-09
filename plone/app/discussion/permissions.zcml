@@ -11,4 +11,9 @@
         title="Review comments"
         />
 
+    <permission
+        id="plone.app.discussion.PublicComment"
+        title="Public comment"
+        />
+
 </configure>
