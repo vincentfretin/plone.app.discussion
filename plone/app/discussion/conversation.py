@@ -23,6 +23,8 @@ from zope.annotation.interfaces import IAnnotations, IAnnotatable
 
 from zope.event import notify
 
+from AccessControl.SpecialUsers import nobody as user_nobody
+
 from Acquisition import aq_base, aq_inner, aq_parent
 from Acquisition import Explicit
 
@@ -158,7 +160,9 @@ class Conversation(Traversable, Persistent, Explicit):
 
     @property
     def total_comments(self):
-        return len(self._comments)
+        public_comment = lambda comment: \
+            user_nobody.has_permission('Public comment', comment)
+        return len(filter(public_comment, self._comments.values()))
 
     @property
     def last_comment_date(self):
@@ -198,7 +202,7 @@ class Conversation(Traversable, Persistent, Explicit):
                 children = self._children.get(comment_id, None)
                 if children is not None:
                     for child_id in children:
-                        for value in recurse(child_id, d+1):
+                        for value in recurse(child_id, d + 1):
                             yield value
 
         # Find top level threads
@@ -486,4 +490,3 @@ class CommentReplies(ConversationReplies):
 
     # Dict API is inherited, written in terms of self.conversation and
     # self.children
-

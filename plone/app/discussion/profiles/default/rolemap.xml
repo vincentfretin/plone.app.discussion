@@ -5,6 +5,8 @@
             <role name="Manager"/>
             <role name="Reviewer"/>
         </permission>
+        <permission name="Public comment" acquire="False">
+        </permission>
         <permission name="Reply to item" acquire="False">
             <role name="Authenticated"/>
         </permission>

@@ -382,11 +382,14 @@ class CommentsViewlet(ViewletBase):
                     yield r
 
         # Return all direct replies
-        if conversation.total_comments > 0:
+        try:
+            conversation.getComments().next()
             if workflow_actions:
                 return replies_with_workflow_actions()
             else:
                 return published_replies()
+        except StopIteration:
+            pass
 
     def get_commenter_home_url(self, username=None):
         if username is None:

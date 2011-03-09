@@ -80,6 +80,10 @@ class ConversationIndexersTest(PloneTestCase):
         del self.conversation[self.new_id3]
         self.assertEquals(catalog.total_comments(self.portal.doc1)(), 0)
 
+    def test_conversation_total_public_comments(self):
+        self.conversation[self.new_id1]._Public_comment_Permission = tuple()
+        self.assertEquals(catalog.total_comments(self.portal.doc1)(), 2)
+
     def test_conversation_last_comment_date(self):
         self.assert_(isinstance(catalog.last_comment_date,
                                 DelegatingIndexerFactory))
