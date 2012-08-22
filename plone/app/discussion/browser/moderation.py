@@ -159,9 +159,8 @@ class PublishComment(BrowserView):
         portal_workflow = getToolByName(comment, 'portal_workflow')
         portal_workflow.doActionFor(comment, workflow_action)
 
-        catalog = getToolByName(comment, 'portal_catalog')
-        catalog.reindexObject(comment)
-        catalog.reindexObject(commented_content)
+        comment.reindexObject()
+        commented_content.reindexObject()
 
         IStatusMessage(self.context.REQUEST).addStatusMessage(
             _("Comment approved."),
