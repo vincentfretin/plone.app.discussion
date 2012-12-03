@@ -33,7 +33,7 @@
                              depth reply_dict/depth|python:0;
                              author_home_url python:view.get_commenter_home_url(username=reply.author_username);
                              has_author_link python:author_home_url and not isAnon;
-                             portrait_url python:view.get_commenter_portrait(reply.author_username);
+                             portrait_url python:view.get_commenter_portrait(reply.author_username, reply.author_email);
                              review_state python:wtool.getInfoFor(reply, 'review_state', 'none');"
                  tal:attributes="class python:'comment replyTreeLevel'+str(depth)+' state-'+str(review_state);
                                  style string:margin-left: ${depth}em;

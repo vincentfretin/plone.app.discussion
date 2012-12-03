@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import hashlib
+import urllib
+
 from Acquisition import aq_inner
 
 from AccessControl import Unauthorized
@@ -42,6 +45,7 @@ from plone.z3cform.fieldsets import extensible
 
 
 from plone.z3cform.interfaces import IWrappedForm
+
 
 COMMENT_DESCRIPTION_PLAIN_TEXT = _(
     u"comment_description_plain_text",
@@ -99,11 +103,6 @@ class CommentForm(extensible.ExtensibleForm, form.Form):
         if not mtool.isAnonymousUser():
             self.widgets['author_name'].mode = interfaces.HIDDEN_MODE
             self.widgets['author_email'].mode = interfaces.HIDDEN_MODE
-
-        # Todo: Since we are not using the author_email field in the
-        # current state, we hide it by default. But we keep the field for
-        # integrators or later use.
-        self.widgets['author_email'].mode = interfaces.HIDDEN_MODE
 
         registry = queryUtility(IRegistry)
         settings = registry.forInterface(IDiscussionSettings, check=False)
@@ -171,6 +170,11 @@ class CommentForm(extensible.ExtensibleForm, form.Form):
             author_name = data['author_name']
             if isinstance(author_name, str):
                 author_name = unicode(author_name, 'utf-8')
+
+        if 'author_email' in data:
+            author_email = data['author_email']
+            if isinstance(author_email, str):
+                author_email = unicode(author_email, 'utf-8')
 
         # Set comment author properties for anonymous users or members
         can_reply = getSecurityManager().checkPermission('Reply to item',
@@ -383,11 +387,20 @@ class CommentsViewlet(ViewletBase):
         else:
             return "%s/author/%s" % (self.context.portal_url(), username)
 
-    def get_commenter_portrait(self, username=None):
+    def get_commenter_portrait(self, username=None, email=None):
+        default = 'defaultUser.gif'
+        size = 100
 
-        if username is None:
+        if username is None and email is None:
             # return the default user image if no username is given
-            return 'defaultUser.gif'
+            return default
+        elif email is not None:
+            #use gravatar
+            hashed_email = hashlib.md5(email.lower()).hexdigest()
+            gravatar_url = "http://www.gravatar.com/avatar/%s?" % hashed_email
+            gravatar_url += urllib.urlencode({'d':default, 's':str(size)})
+            return gravatar_url
+
         else:
             portal_membership = getToolByName(self.context,
                                               'portal_membership',
