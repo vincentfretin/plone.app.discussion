@@ -397,7 +397,7 @@ class CommentsViewlet(ViewletBase):
         elif email is not None:
             #use gravatar
             hashed_email = hashlib.md5(email.lower()).hexdigest()
-            gravatar_url = "http://www.gravatar.com/avatar/%s?" % hashed_email
+            gravatar_url = "//www.gravatar.com/avatar/%s?" % hashed_email
             gravatar_url += urllib.urlencode({'d':default, 's':str(size)})
             return gravatar_url
 
