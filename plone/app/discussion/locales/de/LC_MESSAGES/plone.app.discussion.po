@@ -52,7 +52,7 @@ msgid "Commenter Image"
 msgstr "Porträt des Benutzers"
 
 msgid "Commenting infrastructure for Plone"
-msgstr ""
+msgstr "Kommentar System für Plone"
 
 #: ../interfaces.py:136
 msgid "Conversation"
@@ -64,7 +64,7 @@ msgstr "Erstellungsdatum"
 
 #: ../interfaces.py:40
 msgid "Date of the most recent public comment"
-msgstr ""
+msgstr "Zeitpunkt des zuletzt abgegebenen Kommentars"
 
 #: ../vocabularies.py:44
 msgid "Disabled"
@@ -128,15 +128,15 @@ msgstr "Liste von Benutzern, die Kommentare abgegeben haben"
 
 #: ../interfaces.py:50
 msgid "The set of unique commentators (usernames) of published_comments"
-msgstr ""
+msgstr "Die Liste der eindeutigen Benutzernamen der Autoren von veröffentlichten Kommentaren."
 
 #: ../interfaces.py:34
 msgid "Total number of public comments on this item"
-msgstr "Summe der veröffentlichten Kommentare zu diesem Artikel"
+msgstr "Gesamtanzahl der veröffentlichten Kommentare zu diesem Artikel"
 
 #: ../comment.py:158
 msgid "Transform '%s' => '%s' not available. Failed to transform comment '%s'."
-msgstr ""
+msgstr "Die Transformation '%s' => '%s' ist nicht verfügbar. Der Kommentar '%s' konte nicht transformiert werden."
 
 #: ../browser/controlpanel.py:69
 msgid "User Email Notification"
@@ -254,7 +254,7 @@ msgstr "Wenn Sie diese Einstellung aktivieren, können Artikel generell kommenti
 #. Default: "If selected, comments will enter a 'Pending' state in which they are invisible to the public. A user with the 'Review comments' permission ('Reviewer' or 'Manager') can approve comments to make them visible to the public. If you want to enable a custom comment workflow, you have to go to the types control panel."
 #: ../interfaces.py:248
 msgid "help_moderation_enabled"
-msgstr ""
+msgstr "Wenn diese Option ausgwählt ist, nehmen neue Kommentare den Status 'Wartend' an in dem diese nicht öffentlich sichtbar sind. Um Kommentare öffentlich sichtbar zu machen, kann ein Benutzer mit der Berechtigung 'Review comments' ('Reviewer' oder 'Manager') diese veröffentlichen. Um einen angepassten Arbeitablauf einzustellen, verwenden Sie die Konfigurations Einstellungen für Artikeltypen."
 
 #. Default: "Address to which moderator notifications will be sent."
 #: ../interfaces.py:316
@@ -264,7 +264,7 @@ msgstr "E-Mail Adresse an welche die Moderatoren-Benachrichtigungen gesendet wer
 #. Default: "If selected, the moderator is notified if a comment needs attention. The moderator email address can be found in the 'Mail settings' control panel (Site 'From' address)"
 #: ../interfaces.py:304
 msgid "help_moderator_notification_enabled"
-msgstr ""
+msgstr "Bei ausgewählter Option, wird der Moderator informiert wenn ein Kommentar bearbeitet werden soll. Die Maildadresse des Moderators wird in den Konfigurations Einstellung 'E-Mail' (unter "Absenderadresse der Website") eingestellt."
 
 #. Default: "If selected, an image of the user is shown next to the comment."
 #: ../interfaces.py:294
@@ -274,7 +274,7 @@ msgstr "Wenn Sie diese Einstellung aktivieren, wird das Porträt des kommentiere
 #. Default: "Use this setting to choose if the comment text should be transformed in any way. You can choose between 'Plain text' and 'Intelligent text'. 'Intelligent text' converts plain text into HTML where line breaks and indentation is preserved, and web and email addresses are made into clickable links."
 #: ../interfaces.py:263
 msgid "help_text_transform"
-msgstr ""
+msgstr "Verwenden Sie diese Einstellung, um die Transformation für den eingebenen Kommentartext einzustellen. Sie können zwischen einfachem Text 'Plain text' und  'Intelligent text' wählen. 'Intelligent text' konvertiert einfachen Text in HTML. Hierbei bleiben Zeilenumbrüche und Einrückungen erhalten und Web- und e:mail Adressen werden zu anklickbaren Links."
 
 #. Default: "If selected, users can choose to be notified of new comments by email."
 #: ../interfaces.py:325
@@ -295,7 +295,7 @@ msgstr "Anonyme Kommentare"
 #. Default: "Enable anonymous email field"
 #: ../interfaces.py:332
 msgid "label_anonymous_email_enabled"
-msgstr ""
+msgstr "Unsichtbares E-Mail Feld aktivieren"
 
 #. Default: "Apply"
 #: ../browser/moderation.pt:71
@@ -315,7 +315,7 @@ msgstr "Kommentar"
 #. Default: "Commenting has been disabled."
 #: ../browser/comments.pt:130
 msgid "label_commenting_disabled"
-msgstr ""
+msgstr "Die Kommentarfunktion wurde deaktiviert"
 
 #. Default: "Delete"
 #: ../browser/moderation.pt:130
@@ -330,12 +330,12 @@ msgstr "Kommentierungsfunktion generell einschalten"
 #. Default: "Enable comment moderation"
 #: ../interfaces.py:246
 msgid "label_moderation_enabled"
-msgstr ""
+msgstr "Moderation für Kommentare aktivieren"
 
 #. Default: "Moderator Email Address"
 #: ../interfaces.py:314
 msgid "label_moderator_email"
-msgstr ""
+msgstr "E-Mail Adresse des Moderators"
 
 #. Default: "Enable moderator email notification"
 #: ../interfaces.py:302
@@ -406,12 +406,12 @@ msgstr ""
 #. Default: "enable the 'Comment Review Workflow' for the Comment content type"
 #: ../browser/moderation.pt:33
 msgid "message_enable_comment_workflow"
-msgstr ""
+msgstr "Den 'Arbeitsablauf für moderierte Kommentare' für den Artikeltyp Kommentar aktivieren"
 
 #. Default: "Moderation workflow is disabled. You have to ${enable_comment_workflow} before you can moderate comments here."
 #: ../browser/moderation.pt:33
 msgid "message_moderation_disabled"
-msgstr ""
+msgstr "Der 'Arbeitsablauf für moderierte Kommentare' ist deaktiviert. Sie müssen den ${enable_comment_workflow} aktivieren, bevor Sie die Kommentare moderieren können."
 
 #. Default: "No comments to moderate."
 #: ../browser/moderation.pt:43
