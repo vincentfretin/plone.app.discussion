@@ -264,7 +264,7 @@ msgstr "E-Mail Adresse an welche die Moderatoren-Benachrichtigungen gesendet wer
 #. Default: "If selected, the moderator is notified if a comment needs attention. The moderator email address can be found in the 'Mail settings' control panel (Site 'From' address)"
 #: ../interfaces.py:304
 msgid "help_moderator_notification_enabled"
-msgstr "Bei ausgewählter Option, wird der Moderator informiert wenn ein Kommentar bearbeitet werden soll. Die Maildadresse des Moderators wird in den Konfigurations Einstellung 'E-Mail' (unter "Absenderadresse der Website") eingestellt."
+msgstr "Bei ausgewählter Option, wird der Moderator informiert wenn ein Kommentar bearbeitet werden soll. Die Maildadresse des Moderators wird in den Konfigurations Einstellung \"E-Mail\" (unter \"Absenderadresse der Website\") eingestellt."
 
 #. Default: "If selected, an image of the user is shown next to the comment."
 #: ../interfaces.py:294
