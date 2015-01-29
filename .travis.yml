@@ -3,5 +3,6 @@ python: "2.7"
 before_install:
   - git clone -b 5.0 https://github.com/plone/buildout.coredev.git
 install:
+  - cd buildout.coredev
   - python bootstrap.py
   - bin/buildout
