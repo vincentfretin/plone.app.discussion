@@ -1,12 +1,16 @@
 Changelog
 =========
 
-2.3.3 (unreleased)
-------------------
+2.3.4-ecreall (unreleased)
+--------------------------
 
 - Add permission to allow comment authors to delete their own comments if 
   there are no replies yet.
   [gaudenz]
+
+
+2.3.3 (2014-10-23)
+------------------
 
 - Don't execute createReplyForm js if there is no in_reply_to button.
   [vincentfretin]
